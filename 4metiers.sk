@@ -15,7 +15,7 @@
 #! | |  | ||  __/| |_ | ||  __/| |   \__ \
 #! |_|  |_| \___| \__||_| \___||_|   |___/
 
-#!    -    -    Version 1.0.0    -    -    !#
+#!    -    -    Version 2.0.0    -    -    !#
 
 options:
 	JOB.Start-xp : 150
@@ -32,7 +32,7 @@ variables:
 	{JOB.Hunter.Level.%player%} = 0
 	{JOB.Farmer.Level.%player%} = 0
 	{JOB.Woodcutter.Level.%player%} = 0
-	{GUI.Hunter.%player%} = 1
+	{gui slot.Hunter.%player%} = 1
 
 	#!-		Miner			-!#
 	{CountMined.cobblestone.%player%} = 0
@@ -118,115 +118,133 @@ command /metiers [<text>]:
 				stop
 
 		if arg-1 is not set:
-			open virtual chest inventory named "&e&lMétiers" with size 3 to player
-			make a gui slot 0,1,2,3,4,5,6,7,8,9,10,17,18,19,20,21,22,23,24,25 and 26 of player with black stained glass pane named " "
-			make a gui slot 11,12,13,14,15 and 16 of player with white stained glass pane named " "
-			make a gui slot 4 of player with skull of player named "&5&lTotaux" with lore " " and "&f&l- &7Niveau : &8%({JOB.Miner.Level.%player%} + {JOB.Hunter.Level.%player%} + {JOB.Farmer.Level.%player%} + {JOB.Woodcutter.Level.%player%})%" and "&f&l- &7Points de &emétier&7 : &8%({JOB.Miner.xp.%player%} + {JOB.Hunter.xp.%player%} + {JOB.Farmer.xp.%player%} + {JOB.Woodcutter.xp.%player%})%" and " "
-			make a gui slot 10 of player with golden pickaxe named "&f&lMineur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Miner.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Miner.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Miner.Level.%player%}^{@JOB.Difficulty})%" and " " to close then run player command "/metiers mineur"
-			make a gui slot 12 of player with golden sword named "&4&lChasseur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Hunter.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Hunter.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Hunter.Level.%player%}^{@JOB.Difficulty})%" and " " to close then run player command "/metiers chasseur"
-			make a gui slot 14 of player with golden hoe named "&a&lFarmeur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Farmer.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Farmer.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Farmer.Level.%player%}^{@JOB.Difficulty})%" and " " to close then run player command "/metiers farmeur"
-			make a gui slot 16 of player with golden axe named "&9&lBûcheron" with lore " " and "&f&l- &7Niveau : &8%{JOB.Woodcutter.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Woodcutter.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Woodcutter.Level.%player%}^{@JOB.Difficulty})%" and " " to close then run player command "/metiers bucheron"
-			make a gui slot 26 of player with arrow of protection 1 with no nbt named "&c&oFermer le menu" to close
-		
+			create gui with virtual chest inventory named "&e&lMétiers" with 3 rows:
+				make gui slot 0,1,2,3,4,5,6,7,8,9,10,17,18,19,20,21,22,23,24,25 and 26 to black stained glass pane named " "
+				make gui slot 11,12,13,14,15 and 16 to white stained glass pane named " "
+				make gui slot 4 to skull of player named "&5&lTotaux" with lore " " and "&f&l- &7Niveau : &8%({JOB.Miner.Level.%player%} + {JOB.Hunter.Level.%player%} + {JOB.Farmer.Level.%player%} + {JOB.Woodcutter.Level.%player%})%" and "&f&l- &7Points de &emétier&7 : &8%({JOB.Miner.xp.%player%} + {JOB.Hunter.xp.%player%} + {JOB.Farmer.xp.%player%} + {JOB.Woodcutter.xp.%player%})%" and " "
+				make gui slot 10 to golden pickaxe named "&f&lMineur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Miner.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Miner.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Miner.Level.%player%}^{@JOB.Difficulty})%" and " ":
+					make player execute command "/metiers mineur"
+				make gui slot 12 to golden sword named "&4&lChasseur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Hunter.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Hunter.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Hunter.Level.%player%}^{@JOB.Difficulty})%" and " ":
+					make player execute command "/metiers chasseur"
+				make gui slot 14 to golden hoe named "&a&lFarmeur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Farmer.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Farmer.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Farmer.Level.%player%}^{@JOB.Difficulty})%" and " ":
+					make player execute command "/metiers farmeur"
+				make gui slot 16 to golden axe named "&9&lBûcheron" with lore " " and "&f&l- &7Niveau : &8%{JOB.Woodcutter.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Woodcutter.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Woodcutter.Level.%player%}^{@JOB.Difficulty})%" and " ":
+					make player execute command "/metiers bucheron"
+				make gui slot 26 to arrow named "&c&oMenu principal":
+					close player's inventory
+					make player execute command "/menu"
+			show the last gui to the player
 		if arg-1 is "mineur" or "miner":
-			open virtual chest inventory named "&eMétier &7de &f&lMineur" with size 5 to player
-			make a gui slot 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43 and 44 of player with black stained glass pane named " "
-			make a gui slot 0 of player with skull of player named "&6&lStats &emétier &7de &f&lMineur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Miner.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Miner.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Miner.Level.%player%}^{@JOB.Difficulty})%" and " "
-			make a gui slot 10 of player with cobblestone named "&f&lPierres" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &f&fMinées &7: &1%{CountMined.cobblestone.%player%}%"
-			make a gui slot 11 of player with stone named "&f&lRoches" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &fMinées &7: &1%{CountMined.stone.%player%}%"
-			make a gui slot 12 of player with netherrack named "&f&lNetherracks" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &fMinées &7: &1%{CountMined.netherrack.%player%}%"
-			make a gui slot 13 of player with end stone named "&f&lPierres de l'End" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &fMinées &7: &1%{CountMined.end stone.%player%}%"
-			make a gui slot 14 of player with sandstone named "&f&lGrès" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &fMinées &7: &1%{CountMined.sandstone.%player%}%"
-			make a gui slot 15 of player with granite named "&f&lGranites" with lore "&f&l-&9&l 2 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.granite.%player%}%"
-			make a gui slot 16 of player with diorite named "&f&lDiorites" with lore "&f&l-&9&l 2 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.diorite.%player%}%"
-			make a gui slot 19 of player with andesite named "&f&lAndésites" with lore "&f&l-&9&l 2 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.andesite.%player%}%"
-			make a gui slot 20 of player with prismarine named "&f&lPrismarines" with lore "&f&l-&9&l 2 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.prismarine.%player%}%"
-			make a gui slot 21 of player with dark prismarine named "&f&lPrismarines sombres" with lore "&f&l-&9&l 2 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.dark prismarine.%player%}%"
-			make a gui slot 22 of player with mossy cobblestone named "&f&lPierres moussues" with lore "&f&l-&9&l 2 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.mossy cobblestone.%player%}%"
-			make a gui slot 23 of player with coal ore named "&f&lMinerais de charbon" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.coal ore.%player%}%"
-			make a gui slot 24 of player with iron ore named "&f&lMinerais de fer" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.iron ore.%player%}%"
-			make a gui slot 25 of player with redstone ore named "&f&lMinerais de redstone" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.redstone ore.%player%}%"
-			make a gui slot 28 of player with obsidian named "&f&lObsidiennes" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.obsidian.%player%}%"
-			make a gui slot 29 of player with gold ore named "&f&lMinerais d'or" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.gold ore.%player%}%"
-			make a gui slot 30 of player with lapis ore named "&f&lMinerais de lapis-lazuli" with lore "&f&l-&9&l 25 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.lapis ore.%player%}%"
-			make a gui slot 31 of player with nether quartz ore named "&f&lMinerais de quartz du Nether" with lore "&f&l-&9&l 25 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.nether quartz ore.%player%}%"
-			make a gui slot 32 of player with diamond ore named "&f&lMinerais de diamant" with lore "&f&l-&9&l 50 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.diamond ore.%player%}%"
-			make a gui slot 33 of player with emerald ore named "&f&lMinerais d'émeraude" with lore "&f&l-&9&l 100 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.emerald ore.%player%}%"
-			make a gui slot 44 of player with arrow of protection 1 with no nbt named "&c&oMenu des &e&ométiers" to close then run player command "/metiers"
+			create gui with virtual chest inventory with 5 rows named "&eMétier &7de &f&lMineur":
+				make gui slot 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43 and 44 to black stained glass pane named " "
+				make gui slot 0 to skull of player named "&6&lStats &emétier &7de &f&lMineur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Miner.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Miner.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Miner.Level.%player%}^{@JOB.Difficulty})%" and " "
+				make gui slot 10 to cobblestone named "&f&lPierres" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &f&fMinées &7: &1%{CountMined.cobblestone.%player%}%"
+				make gui slot 11 to stone named "&f&lRoches" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &fMinées &7: &1%{CountMined.stone.%player%}%"
+				make gui slot 12 to netherrack named "&f&lNetherracks" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &fMinées &7: &1%{CountMined.netherrack.%player%}%"
+				make gui slot 13 to end stone named "&f&lPierres de l'End" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &fMinées &7: &1%{CountMined.end stone.%player%}%"
+				make gui slot 14 to sandstone named "&f&lGrès" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &fMinées &7: &1%{CountMined.sandstone.%player%}%"
+				make gui slot 15 to granite named "&f&lGranites" with lore "&f&l-&9&l 2 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.granite.%player%}%"
+				make gui slot 16 to diorite named "&f&lDiorites" with lore "&f&l-&9&l 2 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.diorite.%player%}%"
+				make gui slot 19 to andesite named "&f&lAndésites" with lore "&f&l-&9&l 2 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.andesite.%player%}%"
+				make gui slot 20 to prismarine named "&f&lPrismarines" with lore "&f&l-&9&l 2 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.prismarine.%player%}%"
+				make gui slot 21 to dark prismarine named "&f&lPrismarines sombres" with lore "&f&l-&9&l 2 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.dark prismarine.%player%}%"
+				make gui slot 22 to mossy cobblestone named "&f&lPierres moussues" with lore "&f&l-&9&l 2 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.mossy cobblestone.%player%}%"
+				make gui slot 23 to coal ore named "&f&lMinerais de charbon" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.coal ore.%player%}%"
+				make gui slot 24 to iron ore named "&f&lMinerais de fer" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.iron ore.%player%}%"
+				make gui slot 25 to redstone ore named "&f&lMinerais de redstone" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.redstone ore.%player%}%"
+				make gui slot 28 to obsidian named "&f&lObsidiennes" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.obsidian.%player%}%"
+				make gui slot 29 to gold ore named "&f&lMinerais d'or" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.gold ore.%player%}%"
+				make gui slot 30 to lapis ore named "&f&lMinerais de lapis-lazuli" with lore "&f&l-&9&l 25 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.lapis ore.%player%}%"
+				make gui slot 31 to nether quartz ore named "&f&lMinerais de quartz du Nether" with lore "&f&l-&9&l 25 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.nether quartz ore.%player%}%"
+				make gui slot 32 to diamond ore named "&f&lMinerais de diamant" with lore "&f&l-&9&l 50 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.diamond ore.%player%}%"
+				make gui slot 33 to emerald ore named "&f&lMinerais d'émeraude" with lore "&f&l-&9&l 100 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.emerald ore.%player%}%"
+				make gui slot 44 to arrow of protection 1 with no nbt named "&c&oMenu des &e&ométiers":
+					make player execute command "/metiers"
+			show the last gui to the player
 		
 		if arg-1 is "chasseur" or "hunter":
-			if {GUI.Hunter.%player%} is 1:
-				open virtual chest inventory named "&eMétier &7de &4&lChasseur" with size 6 to player
-				make a gui slot 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52 and 53 of player with black stained glass pane named " "
-				make a gui slot 0 of player with skull of player named "&6&lStats &emétier &7de &4&lChasseur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Hunter.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Hunter.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Hunter.Level.%player%}^{@JOB.Difficulty})%" and " "
-				make a gui slot 10 of player with silverfish spawn egg named "&f&lPoissons d'argent" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &4Tués &7: &1%{CountKilled.silverfish.%player%}%"
-				make a gui slot 11 of player with endermite spawn egg named "&f&lEndermites" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &4Tuées &7: &1%{CountKilled.endermite.%player%}%"
-				make a gui slot 12 of player with bat spawn egg named "&f&lChauve-souris" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &4Tuées &7: &1%{CountKilled.bat.%player%}%"
-				make a gui slot 13 of player with shulker spawn egg named "&f&lShulkers" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &4Tués &7: &1%{CountKilled.shulker.%player%}%"
-				make a gui slot 14 of player with vex spawn egg named "&f&lVex" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &4Tués &7: &1%{CountKilled.vex.%player%}%"
-				make a gui slot 15 of player with zombie spawn egg named "&f&lZombies" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.zombie.%player%}%"
-				make a gui slot 16 of player with zombie villager spawn egg named "&f&lZombie-villageois" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.zombie villager.%player%}%"
-				make a gui slot 19 of player with Spider spawn egg named "&f&lAraignées" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tuées &7: &1%{CountKilled.Spider.%player%}%"
-				make a gui slot 20 of player with Cave Spider spawn egg named "&f&lAraignées Venimeuses" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tuées &7: &1%{CountKilled.Cave Spider.%player%}%"
-				make a gui slot 21 of player with slime spawn egg named "&f&lSlime" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.slime.%player%}%"
-				make a gui slot 22 of player with Mooshroom spawn egg named "&f&lChampimeuh" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tuées &7: &1%{CountKilled.Mooshroom.%player%}%"
-				make a gui slot 23 of player with polar bear spawn egg named "&f&lOurs blancs" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.polar bear.%player%}%"
-				make a gui slot 24 of player with skeleton spawn egg named "&f&lSquelettes" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.skeleton.%player%}%"
-				make a gui slot 25 of player with phantom spawn egg named "&f&lPhantoms" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.phantom.%player%}%"
-				make a gui slot 28 of player with guardian spawn egg named "&f&lGardiens" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.guardian.%player%}%"
-				make a gui slot 29 of player with creeper spawn egg named "&f&lCreepers" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.creeper.%player%}%"
-				make a gui slot 30 of player with Enderman spawn egg named "&f&lEndermans" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.Enderman.%player%}%"
-				make a gui slot 31 of player with Zombie Pigman spawn egg named "&f&lCochon-zombies" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.Zombie Pigman.%player%}%"
-				make a gui slot 32 of player with husk egg named "&f&lZombies momifiés" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.husk.%player%}%"
-				make a gui slot 33 of player with drowned spawn egg named "&f&lNoyés" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.drowned.%player%}%"
-				make a gui slot 34 of player with witch spawn egg named "&f&lSorcières" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &4Tuées &7: &1%{CountKilled.witch.%player%}%"
-				make a gui slot 38 of player with Pillager spawn egg named "&f&lPillards" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.Pillager.%player%}%"
-				make a gui slot 39 of player with vindicator spawn egg named "&f&lVindicateurs" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.vindicator.%player%}%"
-				make a gui slot 40 of player with blaze spawn egg named "&f&lBlazes" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.blaze.%player%}%"
-				make a gui slot 41 of player with magma cube spawn egg named "&f&lCubes de magma" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.magma cube.%player%}%"
-				make a gui slot 42 of player with wither skeleton spawn egg named "&f&lWither squelettes" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.wither skeleton.%player%}%"
-				make a gui slot 49 of player with map of protection 1 with no nbt named "&3&oPage Suivante" to close then run function Gui_Hunter(player)
-				make a gui slot 53 of player with arrow of protection 1 with no nbt named "&c&oMenu des &e&ométiers" to close then run player command "/metiers"
-			if {GUI.Hunter.%player%} is 2:
-				open virtual chest inventory named "&b&l&eMétier &7de &4&lChasseur" with size 3 to player
-				make a gui slot 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 and 26 of player with black stained glass pane named " "
-				make a gui slot 0 of player with skull of player named "&6&lStats &emétier &7de &4&lChasseur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Hunter.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Hunter.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Hunter.Level.%player%}^{@JOB.Difficulty})%" and " "
-				make a gui slot 10 of player with stray spawn egg named "&f&lVagabonds" with lore "&f&l-&9&l 25 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.stray.%player%}%"
-				make a gui slot 11 of player with evoker spawn egg named "&f&lÉvocateurs" with lore "&f&l-&9&l 25 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.evoker.%player%}%"
-				make a gui slot 12 of player with ghast spawn egg named "&f&lGhasts" with lore "&f&l-&9&l 25 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.ghast.%player%}%"
-				make a gui slot 13 of player with ravager spawn egg named "&f&lRavageurs" with lore "&f&l-&9&l 30 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.ravager.%player%}%"
-				make a gui slot 14 of player with elder Guardian spawn egg named "&f&lGrands gardiens" with lore "&f&l-&9&l 40 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.elder Guardian.%player%}%"
-				make a gui slot 15 of player with wither skeleton skull named "&f&lWithers" with lore "&f&l-&9&l 50 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.wither.%player%}%"
-				make a gui slot 16 of player with dragon head named "&f&lDragons de l'End" with lore "&f&l-&9&l 250 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.dragon.%player%}%"
-				make a gui slot 22 of player with map of protection 1 with no nbt named "&3&oPage Précédente" to close then run function Gui_Hunter(player)
-				make a gui slot 26 of player with arrow of protection 1 with no nbt named "&c&oMenu des &e&ométiers" to close then run player command "/metiers"
+			if {gui slot.Hunter.%player%} is 1:
+				create gui with virtual chest inventory with 6 rows named "&b&l&eMétier &7de &4&lChasseur":
+					make gui slot 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52 and 53 to black stained glass pane named " "
+					make gui slot 0 to skull of player named "&6&lStats &emétier &7de &4&lChasseur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Hunter.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Hunter.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Hunter.Level.%player%}^{@JOB.Difficulty})%" and " "
+					make gui slot 10 to silverfish spawn egg named "&f&lPoissons d'argent" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &4Tués &7: &1%{CountKilled.silverfish.%player%}%"
+					make gui slot 11 to endermite spawn egg named "&f&lEndermites" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &4Tuées &7: &1%{CountKilled.endermite.%player%}%"
+					make gui slot 12 to bat spawn egg named "&f&lChauve-souris" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &4Tuées &7: &1%{CountKilled.bat.%player%}%"
+					make gui slot 13 to shulker spawn egg named "&f&lShulkers" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &4Tués &7: &1%{CountKilled.shulker.%player%}%"
+					make gui slot 14 to vex spawn egg named "&f&lVex" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &4Tués &7: &1%{CountKilled.vex.%player%}%"
+					make gui slot 15 to zombie spawn egg named "&f&lZombies" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.zombie.%player%}%"
+					make gui slot 16 to zombie villager spawn egg named "&f&lZombie-villageois" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.zombie villager.%player%}%"
+					make gui slot 19 to Spider spawn egg named "&f&lAraignées" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tuées &7: &1%{CountKilled.Spider.%player%}%"
+					make gui slot 20 to Cave Spider spawn egg named "&f&lAraignées Venimeuses" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tuées &7: &1%{CountKilled.Cave Spider.%player%}%"
+					make gui slot 21 to slime spawn egg named "&f&lSlime" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.slime.%player%}%"
+					make gui slot 22 to Mooshroom spawn egg named "&f&lChampimeuh" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tuées &7: &1%{CountKilled.Mooshroom.%player%}%"
+					make gui slot 23 to polar bear spawn egg named "&f&lOurs blancs" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.polar bear.%player%}%"
+					make gui slot 24 to skeleton spawn egg named "&f&lSquelettes" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.skeleton.%player%}%"
+					make gui slot 25 to phantom spawn egg named "&f&lPhantoms" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.phantom.%player%}%"
+					make gui slot 28 to guardian spawn egg named "&f&lGardiens" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.guardian.%player%}%"
+					make gui slot 29 to creeper spawn egg named "&f&lCreepers" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.creeper.%player%}%"
+					make gui slot 30 to Enderman spawn egg named "&f&lEndermans" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.Enderman.%player%}%"
+					make gui slot 31 to Zombie Pigman spawn egg named "&f&lCochon-zombies" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.Zombie Pigman.%player%}%"
+					make gui slot 32 to husk egg named "&f&lZombies momifiés" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.husk.%player%}%"
+					make gui slot 33 to drowned spawn egg named "&f&lNoyés" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.drowned.%player%}%"
+					make gui slot 34 to witch spawn egg named "&f&lSorcières" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &4Tuées &7: &1%{CountKilled.witch.%player%}%"
+					make gui slot 38 to Pillager spawn egg named "&f&lPillards" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.Pillager.%player%}%"
+					make gui slot 39 to vindicator spawn egg named "&f&lVindicateurs" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.vindicator.%player%}%"
+					make gui slot 40 to blaze spawn egg named "&f&lBlazes" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.blaze.%player%}%"
+					make gui slot 41 to magma cube spawn egg named "&f&lCubes de magma" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.magma cube.%player%}%"
+					make gui slot 42 to wither skeleton spawn egg named "&f&lwither squelettes" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.wither skeleton.%player%}%"
+					make gui slot 49 to map of protection 1 with no nbt named "&3&oPage Suivante":
+						gui_Hunter(player)
+					make gui slot 53 to arrow of protection 1 with no nbt named "&c&oMenu des &e&ométiers":
+						make player execute command "/metiers"
+				show the last gui to the player
+			if {gui slot.Hunter.%player%} is 2:
+				create gui with virtual chest inventory with 3 rows named "&b&l&eMétier &7de &4&lChasseur":
+					make gui slot 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 and 26 to black stained glass pane named " "
+					make gui slot 0 to skull of player named "&6&lStats &emétier &7de &4&lChasseur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Hunter.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Hunter.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Hunter.Level.%player%}^{@JOB.Difficulty})%" and " "
+					make gui slot 10 to stray spawn egg named "&f&lVagabonds" with lore "&f&l-&9&l 25 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.stray.%player%}%"
+					make gui slot 11 to evoker spawn egg named "&f&lÉvocateurs" with lore "&f&l-&9&l 25 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.evoker.%player%}%"
+					make gui slot 12 to ghast spawn egg named "&f&lGhasts" with lore "&f&l-&9&l 25 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.ghast.%player%}%"
+					make gui slot 13 to ravager spawn egg named "&f&lRavageurs" with lore "&f&l-&9&l 30 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.ravager.%player%}%"
+					make gui slot 14 to elder Guardian spawn egg named "&f&lGrands gardiens" with lore "&f&l-&9&l 40 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.elder Guardian.%player%}%"
+					make gui slot 15 to wither skeleton skull named "&f&lwithers" with lore "&f&l-&9&l 50 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.wither.%player%}%"
+					make gui slot 16 to dragon head named "&f&lDragons de l'End" with lore "&f&l-&9&l 250 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.dragon.%player%}%"
+					make gui slot 22 to map of protection 1 with no nbt named "&3&oPage Précédente":
+						gui_Hunter(player)
+					make gui slot 26 to arrow of protection 1 with no nbt named "&c&oMenu des &e&ométiers":
+						make player execute command "/metiers"
+				show the last gui to the player
 		
 		if arg-1 is "farmeur" or "farmer":
-			open virtual chest inventory named "&eMétier &7de &a&lFarmeur" with size 4 to player
-			make a gui slot 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34 and 35 of player with black stained glass pane named " "
-			make a gui slot 0 of player with skull of player named "&6&lStats &emétier &7de &a&lFarmeur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Farmer.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Farmer.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Farmer.Level.%player%}^{@JOB.Difficulty})%" and " "
-			make a gui slot 10 of player with wheat named "&f&lBlés" with lore "&f&l-&9&l 5 &2&opoints de &e&ométiers" and "&f&l- &aCultivés &7: &1%{CountFarmed.wheat.%player%}%"
-			make a gui slot 11 of player with potato named "&f&lPatates" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.potato.%player%}%"
-			make a gui slot 12 of player with carrot named "&f&lCarottes" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.carrot.%player%}%"
-			make a gui slot 13 of player with beetroot named "&f&lBetteraves" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.beetroot.%player%}%"
-			make a gui slot 14 of player with mushroom named "&f&lChampignons" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &aCultivés &7: &1%{CountFarmed.mushroom.%player%}%"
-			make a gui slot 15 of player with melon named "&f&lPastèques" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &aCultivés &7: &1%{CountFarmed.melon.%player%}%"
-			make a gui slot 16 of player with pumpkin or carved pumpkin named "&f&lCitrouilles" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.pumpkin.%player%}%"
-			make a gui slot 19 of player with sugar cane named "&f&lCannes à sucre" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.sugar cane.%player%}%"
-			make a gui slot 20 of player with cactus named "&f&lCactus" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &aCultivés &7: &1%{CountFarmed.cactus.%player%}%"
-			make a gui slot 21 of player with Bamboo named "&f&lBambous" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &aCultivés &7: &1%{CountFarmed.Bamboo.%player%}%"
-			make a gui slot 22 of player with cocoa beans named "&f&lCacaos" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &aCultivés &7: &1%{CountFarmed.cocoa beans.%player%}%"
-			make a gui slot 23 of player with kelp named "&f&lAlgues" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.kelp.%player%}%"
-			make a gui slot 24 of player with nether wart named "&f&lVerrues du Nether" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.nether wart.%player%}%"
-			make a gui slot 35 of player with arrow of protection 1 with no nbt named "&c&oMenu des &e&ométiers" to close then run player command "/metiers"
+			create gui with virtual chest inventory with 4 rows named "&eMétier &7de &a&lFarmeur":
+				make gui slot 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34 and 35 to black stained glass pane named " "
+				make gui slot 0 to skull of player named "&6&lStats &emétier &7de &a&lFarmeur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Farmer.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Farmer.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Farmer.Level.%player%}^{@JOB.Difficulty})%" and " "
+				make gui slot 10 to wheat named "&f&lBlés" with lore "&f&l-&9&l 5 &2&opoints de &e&ométiers" and "&f&l- &aCultivés &7: &1%{CountFarmed.wheat.%player%}%"
+				make gui slot 11 to potato named "&f&lPatates" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.potato.%player%}%"
+				make gui slot 12 to carrot named "&f&lCarottes" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.carrot.%player%}%"
+				make gui slot 13 to beetroot named "&f&lBetteraves" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.beetroot.%player%}%"
+				make gui slot 14 to mushroom named "&f&lChampignons" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &aCultivés &7: &1%{CountFarmed.mushroom.%player%}%"
+				make gui slot 15 to melon named "&f&lPastèques" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &aCultivés &7: &1%{CountFarmed.melon.%player%}%"
+				make gui slot 16 to pumpkin or carved pumpkin named "&f&lCitrouilles" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.pumpkin.%player%}%"
+				make gui slot 19 to sugar cane named "&f&lCannes à sucre" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.sugar cane.%player%}%"
+				make gui slot 20 to cactus named "&f&lCactus" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &aCultivés &7: &1%{CountFarmed.cactus.%player%}%"
+				make gui slot 21 to Bamboo named "&f&lBambous" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &aCultivés &7: &1%{CountFarmed.Bamboo.%player%}%"
+				make gui slot 22 to cocoa beans named "&f&lCacaos" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &aCultivés &7: &1%{CountFarmed.cocoa beans.%player%}%"
+				make gui slot 23 to kelp named "&f&lAlgues" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.kelp.%player%}%"
+				make gui slot 24 to nether wart named "&f&lVerrues du Nether" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.nether wart.%player%}%"
+				make gui slot 35 to arrow of protection 1 with no nbt named "&c&oMenu des &e&ométiers":
+					make player execute command "/metiers"
+			show the last gui to the player
 		
 		if arg-1 is "bucheron" or "woodcutter":
-			open virtual chest inventory named "&eMétier &7de &9&lBûcheron" with size 3 to player
-			make a gui slot 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 and 26 of player with black stained glass pane named " "
-			make a gui slot 0 of player with skull of player named "&6&lStats &emétier &7de &9&lBûcheron" with lore " " and "&f&l- &7Niveau : &8%{JOB.Woodcutter.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Woodcutter.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Woodcutter.Level.%player%}^{@JOB.Difficulty})%" and " "
-			make a gui slot 11 of player with leaves named "&f&lFeuilles" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &9Détruites &7: &1%{CountDestroyed.leaves.%player%}%"
-			make a gui slot 15 of player with log named "&f&lBûches" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &9Détruites &7: &1%{CountDestroyed.log.%player%}%"
-			make a gui slot 26 of player with arrow of protection 1 with no nbt named "&c&oMenu des &e&ométiers" to close then run player command "/metiers"
+			create gui with virtual chest inventory with 3 rows named "&eMétier &7de &9&lBûcheron":
+				make gui slot 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 and 26 to black stained glass pane named " "
+				make gui slot 0 to skull of player named "&6&lStats &emétier &7de &9&lBûcheron" with lore " " and "&f&l- &7Niveau : &8%{JOB.Woodcutter.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Woodcutter.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Woodcutter.Level.%player%}^{@JOB.Difficulty})%" and " "
+				make gui slot 11 to leaves named "&f&lFeuilles" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &9Détruites &7: &1%{CountDestroyed.leaves.%player%}%"
+				make gui slot 15 to log named "&f&lBûches" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &9Détruites &7: &1%{CountDestroyed.log.%player%}%"
+				make gui slot 26 to arrow of protection 1 with no nbt named "&c&oMenu des &e&ométiers":
+					make player execute command "/metiers"
+			show the last gui to the player
 
 every 15 seconds:
 	#!-  Hide all BossBars  -!#
@@ -684,7 +702,7 @@ function Check_Miner(p:player):
 		add 1 to {JOB.Miner.Level.%{_p}%}
 		add ({JOB.Miner.Level.%{_p}%} * 1000) to {_p}'s balance
 		send "&2&lBien joué &3&l%{_p}% %nl%&2&lTu es passé niveau &9&l%{JOB.Miner.Level.%{_p}%}% &2&ldans le &e&lmétier &2&lde &f&lMineur" to {_p}
-	create bossbar titled "&f&lNiveau %{JOB.Miner.Level.%{_p}%}% dans le métier de Mineur" and id "JOB.Miner.BossBar" for {_p} with progress ({JOB.Miner.xp.%{_p}%}/{JOB.Check.Miner}*100) with colors white
+	create bossbar title "&f&lNiveau %{JOB.Miner.Level.%{_p}%}% dans le métier de Mineur" and id "JOB.Miner.BossBar" for {_p} with value ({JOB.Miner.xp.%{_p}%}/{JOB.Check.Miner}*100) with colors white
 	stop
 
 function Check_Hunter(p:player):
@@ -694,7 +712,7 @@ function Check_Hunter(p:player):
 		add 1 to {JOB.Hunter.Level.%{_p}%}
 		add ({JOB.Hunter.Level.%{_p}%} * 1000) to {_p}'s balance
 		send "&2&lBien joué &3&l%{_p}% %nl%&2&lTu es passé niveau &9&l%{JOB.Hunter.Level.%{_p}%}% &2&ldans le &e&lmétier &2&lde &4&lChasseur" to {_p}
-	create bossbar titled "&f&lNiveau %{JOB.Hunter.Level.%{_p}%}% dans le métier de Chasseur" and id "JOB.Hunter.BossBar" for {_p} with progress ({JOB.Hunter.xp.%{_p}%}/{JOB.Check.Hunter}*100) with colors red
+	create bossbar title "&f&lNiveau %{JOB.Hunter.Level.%{_p}%}% dans le métier de Chasseur" and id "JOB.Hunter.BossBar" for {_p} with value ({JOB.Hunter.xp.%{_p}%}/{JOB.Check.Hunter}*100) with colors red
 	stop
 
 function Check_Farmer(p:player):
@@ -704,7 +722,7 @@ function Check_Farmer(p:player):
 		add 1 to {JOB.Farmer.Level.%{_p}%}
 		add ({JOB.Farmer.Level.%{_p}%} * 1000) to {_p}'s balance
 		send "&2&lBien joué &3&l%{_p}% %nl%&2&lTu es passé niveau &9&l%{JOB.Farmer.Level.%{_p}%}% &2&ldans le &e&lmétier &2&lde &a&lFarmeur" to {_p}
-	create bossbar titled "&f&lNiveau %{JOB.Farmer.Level.%{_p}%}% dans le métier de Fermier" and id "JOB.Farmer.BossBar" for {_p} with progress ({JOB.Farmer.xp.%{_p}%}/{JOB.Check.Farmer}*100) with colors green
+	create bossbar title "&f&lNiveau %{JOB.Farmer.Level.%{_p}%}% dans le métier de Fermier" and id "JOB.Farmer.BossBar" for {_p} with value ({JOB.Farmer.xp.%{_p}%}/{JOB.Check.Farmer}*100) with colors green
 	stop
 
 function Check_Woodcutter(p:player):
@@ -714,14 +732,14 @@ function Check_Woodcutter(p:player):
 		add 1 to {JOB.Woodcutter.Level.%{_p}%}
 		add ({JOB.Woodcutter.Level.%{_p}%} * 1000) to {_p}'s balance
 		send "&2&lBien joué &3&l%{_p}% %nl%&2&lTu es passé niveau &9&l%{JOB.Woodcutter.Level.%{_p}%}% &2&ldans le &e&lmétier &2&lde &f&l-&9&lBûcheron" to {_p}
-	create bossbar titled "&f&lNiveau %{JOB.Woodcutter.Level.%{_p}%}% dans le métier de bûcheron" and id "JOB.Woodcutter.BossBar" for {_p} with progress ({JOB.Woodcutter.xp.%{_p}%}/{JOB.Check.Woodcutter}*100) with colors blue
+	create bossbar title "&f&lNiveau %{JOB.Woodcutter.Level.%{_p}%}% dans le métier de bûcheron" and id "JOB.Woodcutter.BossBar" for {_p} with value ({JOB.Woodcutter.xp.%{_p}%}/{JOB.Check.Woodcutter}*100) with colors blue
 	stop
 
-function Gui_Hunter(p: player):
-	if {GUI.Hunter.%{_p	}%} is 1:
-		set {GUI.Hunter.%{_p}%} to 2
+function gui_Hunter(p: player):
+	if {gui slot.Hunter.%{_p	}%} is 1:
+		set {gui slot.Hunter.%{_p}%} to 2
 	else:
-		set {GUI.Hunter.%{_p}%} to 1
+		set {gui slot.Hunter.%{_p}%} to 1
 	make {_p} execute "metiers chasseur"
 
 function Reset_Player(p: player):
