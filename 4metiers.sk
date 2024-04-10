@@ -1,0 +1,811 @@
+
+#!------------------------------------------------------!#
+#!	 ___		 _____									!#
+#!	| _ ) _  _  |_   _|__ _  _ _  _  _  _ __   ___		!#
+#!	| _ \| || |   | | / _` || '_|| || || '  \ / _ \		!#
+#!	|___/ \_, |   |_| \__,_||_|   \_,_||_|_|_|\___/		!#
+#!		  |__/											!#
+#!------------------------------------------------------!#
+
+
+#!  __  __    __  _    _
+#! |  \/  |  /_/ | |  (_)
+#! | \  / |  ___ | |_  _   ___  _ __  ___ 
+#! | |\/| | / _ \| __|| | / _ \| '__|/ __|
+#! | |  | ||  __/| |_ | ||  __/| |   \__ \
+#! |_|  |_| \___| \__||_| \___||_|   |___/
+
+#!    -    -    Version 1.0.0    -    -    !#
+
+options:
+	JOB.Start-xp : 150
+	JOB.Difficulty : 2
+	JOB.Count.Needed : 50
+	JOB.Reward : 500
+
+variables:
+	{JOB.Miner.xp.%player%} = 0
+	{JOB.Hunter.xp.%player%} = 0
+	{JOB.Farmer.xp.%player%} = 0
+	{JOB.Woodcutter.xp.%player%} = 0
+	{JOB.Miner.Level.%player%} = 0
+	{JOB.Hunter.Level.%player%} = 0
+	{JOB.Farmer.Level.%player%} = 0
+	{JOB.Woodcutter.Level.%player%} = 0
+	{GUI.Hunter.%player%} = 1
+
+	#!-		Miner			-!#
+	{CountMined.cobblestone.%player%} = 0
+	{CountMined.stone.%player%} = 0
+	{CountMined.netherrack.%player%} = 0
+	{CountMined.end stone.%player%} = 0
+	{CountMined.sandstone.%player%} = 0
+	{CountMined.granite.%player%} = 0
+	{CountMined.diorite.%player%} = 0
+	{CountMined.andesite.%player%} = 0
+	{CountMined.prismarine.%player%} = 0
+	{CountMined.dark prismarine.%player%} = 0
+	{CountMined.mossy cobblestone.%player%} = 0
+	{CountMined.coal ore.%player%} = 0
+	{CountMined.iron ore.%player%} = 0
+	{CountMined.redstone ore.%player%} = 0
+	{CountMined.obsidian.%player%} = 0
+	{CountMined.gold ore.%player%} = 0
+	{CountMined.lapis ore.%player%} = 0
+	{CountMined.nether quartz ore.%player%} = 0
+	{CountMined.diamond ore.%player%} = 0
+	{CountMined.emerald ore.%player%} = 0
+	
+	#!-		Farmer			-!#
+	{CountFarmed.wheat.%player%} = 0
+	{CountFarmed.potato.%player%} = 0
+	{CountFarmed.carrot.%player%} = 0
+	{CountFarmed.beetroot.%player%} = 0
+	{CountFarmed.mushroom.%player%} = 0
+	{CountFarmed.melon.%player%} = 0
+	{CountFarmed.pumpkin.%player%} = 0
+	{CountFarmed.sugar cane.%player%} = 0
+	{CountFarmed.cactus.%player%} = 0
+	{CountFarmed.Bamboo.%player%} = 0
+	{CountFarmed.cocoa beans.%player%} = 0
+	{CountFarmed.kelp.%player%} = 0
+	{CountFarmed.nether wart.%player%} = 0
+
+	#!-		Woodcutter		-!#
+	{CountDestroyed.leaves.%player%} = 0
+	{CountDestroyed.log.%player%} = 0
+
+	#!-		Hunter			-!#
+	{CountKilled.silverfish.%player%} = 0
+	{CountKilled.endermite.%player%} = 0
+	{CountKilled.bat.%player%} = 0
+	{CountKilled.shulker.%player%} = 0
+	{CountKilled.vex.%player%} = 0
+	{CountKilled.zombie.%player%} = 0
+	{CountKilled.zombie villager.%player%} = 0
+	{CountKilled.Spider.%player%} = 0
+	{CountKilled.Cave Spider.%player%} = 0
+	{CountKilled.slime.%player%} = 0
+	{CountKilled.Mooshroom.%player%} = 0
+	{CountKilled.polar bear.%player%} = 0
+	{CountKilled.skeleton.%player%} = 0
+	{CountKilled.phantom.%player%} = 0
+	{CountKilled.guardian.%player%} = 0
+	{CountKilled.creeper.%player%} = 0
+	{CountKilled.Enderman.%player%} = 0
+	{CountKilled.Zombie Pigman.%player%} = 0
+	{CountKilled.husk.%player%} = 0
+	{CountKilled.drowned.%player%} = 0
+	{CountKilled.witch.%player%} = 0
+	{CountKilled.Pillager.%player%} = 0
+	{CountKilled.vindicator.%player%} = 0
+	{CountKilled.blaze.%player%} = 0
+	{CountKilled.magma cube.%player%} = 0
+	{CountKilled.wither skeleton.%player%} = 0
+	{CountKilled.stray.%player%} = 0
+	{CountKilled.evoker.%player%} = 0
+	{CountKilled.ghast.%player%} = 0
+	{CountKilled.ravager.%player%} = 0
+	{CountKilled.elder Guardian.%player%} = 0
+	{CountKilled.wither.%player%} = 0
+	{CountKilled.dragon.%player%} = 0
+
+command /metiers [<text>]:
+	aliases: job
+	trigger:
+		if player is op:
+			if player's tool is stick:
+				stop
+
+		if arg-1 is not set:
+			open virtual chest inventory named "&e&lMétiers" with size 3 to player
+			make a gui slot 0,1,2,3,4,5,6,7,8,9,10,17,18,19,20,21,22,23,24,25 and 26 of player with black stained glass pane named " "
+			make a gui slot 11,12,13,14,15 and 16 of player with white stained glass pane named " "
+			make a gui slot 4 of player with skull of player named "&5&lTotaux" with lore " " and "&f&l- &7Niveau : &8%({JOB.Miner.Level.%player%} + {JOB.Hunter.Level.%player%} + {JOB.Farmer.Level.%player%} + {JOB.Woodcutter.Level.%player%})%" and "&f&l- &7Points de &emétier&7 : &8%({JOB.Miner.xp.%player%} + {JOB.Hunter.xp.%player%} + {JOB.Farmer.xp.%player%} + {JOB.Woodcutter.xp.%player%})%" and " "
+			make a gui slot 10 of player with golden pickaxe named "&f&lMineur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Miner.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Miner.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Miner.Level.%player%}^{@JOB.Difficulty})%" and " " to close then run player command "/metiers mineur"
+			make a gui slot 12 of player with golden sword named "&4&lChasseur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Hunter.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Hunter.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Hunter.Level.%player%}^{@JOB.Difficulty})%" and " " to close then run player command "/metiers chasseur"
+			make a gui slot 14 of player with golden hoe named "&a&lFarmeur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Farmer.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Farmer.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Farmer.Level.%player%}^{@JOB.Difficulty})%" and " " to close then run player command "/metiers farmeur"
+			make a gui slot 16 of player with golden axe named "&9&lBûcheron" with lore " " and "&f&l- &7Niveau : &8%{JOB.Woodcutter.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Woodcutter.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Woodcutter.Level.%player%}^{@JOB.Difficulty})%" and " " to close then run player command "/metiers bucheron"
+			make a gui slot 26 of player with arrow of protection 1 with no nbt named "&c&oFermer le menu" to close
+		
+		if arg-1 is "mineur" or "miner":
+			open virtual chest inventory named "&eMétier &7de &f&lMineur" with size 5 to player
+			make a gui slot 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43 and 44 of player with black stained glass pane named " "
+			make a gui slot 0 of player with skull of player named "&6&lStats &emétier &7de &f&lMineur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Miner.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Miner.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Miner.Level.%player%}^{@JOB.Difficulty})%" and " "
+			make a gui slot 10 of player with cobblestone named "&f&lPierres" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &f&fMinées &7: &1%{CountMined.cobblestone.%player%}%"
+			make a gui slot 11 of player with stone named "&f&lRoches" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &fMinées &7: &1%{CountMined.stone.%player%}%"
+			make a gui slot 12 of player with netherrack named "&f&lNetherracks" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &fMinées &7: &1%{CountMined.netherrack.%player%}%"
+			make a gui slot 13 of player with end stone named "&f&lPierres de l'End" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &fMinées &7: &1%{CountMined.end stone.%player%}%"
+			make a gui slot 14 of player with sandstone named "&f&lGrès" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &fMinées &7: &1%{CountMined.sandstone.%player%}%"
+			make a gui slot 15 of player with granite named "&f&lGranites" with lore "&f&l-&9&l 2 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.granite.%player%}%"
+			make a gui slot 16 of player with diorite named "&f&lDiorites" with lore "&f&l-&9&l 2 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.diorite.%player%}%"
+			make a gui slot 19 of player with andesite named "&f&lAndésites" with lore "&f&l-&9&l 2 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.andesite.%player%}%"
+			make a gui slot 20 of player with prismarine named "&f&lPrismarines" with lore "&f&l-&9&l 2 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.prismarine.%player%}%"
+			make a gui slot 21 of player with dark prismarine named "&f&lPrismarines sombres" with lore "&f&l-&9&l 2 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.dark prismarine.%player%}%"
+			make a gui slot 22 of player with mossy cobblestone named "&f&lPierres moussues" with lore "&f&l-&9&l 2 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.mossy cobblestone.%player%}%"
+			make a gui slot 23 of player with coal ore named "&f&lMinerais de charbon" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.coal ore.%player%}%"
+			make a gui slot 24 of player with iron ore named "&f&lMinerais de fer" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.iron ore.%player%}%"
+			make a gui slot 25 of player with redstone ore named "&f&lMinerais de redstone" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.redstone ore.%player%}%"
+			make a gui slot 28 of player with obsidian named "&f&lObsidiennes" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &fMinées &7: &1%{CountMined.obsidian.%player%}%"
+			make a gui slot 29 of player with gold ore named "&f&lMinerais d'or" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.gold ore.%player%}%"
+			make a gui slot 30 of player with lapis ore named "&f&lMinerais de lapis-lazuli" with lore "&f&l-&9&l 25 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.lapis ore.%player%}%"
+			make a gui slot 31 of player with nether quartz ore named "&f&lMinerais de quartz du Nether" with lore "&f&l-&9&l 25 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.nether quartz ore.%player%}%"
+			make a gui slot 32 of player with diamond ore named "&f&lMinerais de diamant" with lore "&f&l-&9&l 50 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.diamond ore.%player%}%"
+			make a gui slot 33 of player with emerald ore named "&f&lMinerais d'émeraude" with lore "&f&l-&9&l 100 &2&opoints de &e&ométier" and "&f&l- &fMinés &7: &1%{CountMined.emerald ore.%player%}%"
+			make a gui slot 44 of player with arrow of protection 1 with no nbt named "&c&oMenu des &e&ométiers" to close then run player command "/metiers"
+		
+		if arg-1 is "chasseur" or "hunter":
+			if {GUI.Hunter.%player%} is 1:
+				open virtual chest inventory named "&eMétier &7de &4&lChasseur" with size 6 to player
+				make a gui slot 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52 and 53 of player with black stained glass pane named " "
+				make a gui slot 0 of player with skull of player named "&6&lStats &emétier &7de &4&lChasseur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Hunter.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Hunter.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Hunter.Level.%player%}^{@JOB.Difficulty})%" and " "
+				make a gui slot 10 of player with silverfish spawn egg named "&f&lPoissons d'argent" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &4Tués &7: &1%{CountKilled.silverfish.%player%}%"
+				make a gui slot 11 of player with endermite spawn egg named "&f&lEndermites" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &4Tuées &7: &1%{CountKilled.endermite.%player%}%"
+				make a gui slot 12 of player with bat spawn egg named "&f&lChauve-souris" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &4Tuées &7: &1%{CountKilled.bat.%player%}%"
+				make a gui slot 13 of player with shulker spawn egg named "&f&lShulkers" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &4Tués &7: &1%{CountKilled.shulker.%player%}%"
+				make a gui slot 14 of player with vex spawn egg named "&f&lVex" with lore "&f&l-&9&l 1 &2&opoint de &e&ométiers" and "&f&l- &4Tués &7: &1%{CountKilled.vex.%player%}%"
+				make a gui slot 15 of player with zombie spawn egg named "&f&lZombies" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.zombie.%player%}%"
+				make a gui slot 16 of player with zombie villager spawn egg named "&f&lZombie-villageois" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.zombie villager.%player%}%"
+				make a gui slot 19 of player with Spider spawn egg named "&f&lAraignées" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tuées &7: &1%{CountKilled.Spider.%player%}%"
+				make a gui slot 20 of player with Cave Spider spawn egg named "&f&lAraignées Venimeuses" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tuées &7: &1%{CountKilled.Cave Spider.%player%}%"
+				make a gui slot 21 of player with slime spawn egg named "&f&lSlime" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.slime.%player%}%"
+				make a gui slot 22 of player with Mooshroom spawn egg named "&f&lChampimeuh" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tuées &7: &1%{CountKilled.Mooshroom.%player%}%"
+				make a gui slot 23 of player with polar bear spawn egg named "&f&lOurs blancs" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.polar bear.%player%}%"
+				make a gui slot 24 of player with skeleton spawn egg named "&f&lSquelettes" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.skeleton.%player%}%"
+				make a gui slot 25 of player with phantom spawn egg named "&f&lPhantoms" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.phantom.%player%}%"
+				make a gui slot 28 of player with guardian spawn egg named "&f&lGardiens" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.guardian.%player%}%"
+				make a gui slot 29 of player with creeper spawn egg named "&f&lCreepers" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.creeper.%player%}%"
+				make a gui slot 30 of player with Enderman spawn egg named "&f&lEndermans" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.Enderman.%player%}%"
+				make a gui slot 31 of player with Zombie Pigman spawn egg named "&f&lCochon-zombies" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.Zombie Pigman.%player%}%"
+				make a gui slot 32 of player with husk egg named "&f&lZombies momifiés" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.husk.%player%}%"
+				make a gui slot 33 of player with drowned spawn egg named "&f&lNoyés" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.drowned.%player%}%"
+				make a gui slot 34 of player with witch spawn egg named "&f&lSorcières" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &4Tuées &7: &1%{CountKilled.witch.%player%}%"
+				make a gui slot 38 of player with Pillager spawn egg named "&f&lPillards" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.Pillager.%player%}%"
+				make a gui slot 39 of player with vindicator spawn egg named "&f&lVindicateurs" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.vindicator.%player%}%"
+				make a gui slot 40 of player with blaze spawn egg named "&f&lBlazes" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.blaze.%player%}%"
+				make a gui slot 41 of player with magma cube spawn egg named "&f&lCubes de magma" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.magma cube.%player%}%"
+				make a gui slot 42 of player with wither skeleton spawn egg named "&f&lWither squelettes" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.wither skeleton.%player%}%"
+				make a gui slot 49 of player with map of protection 1 with no nbt named "&3&oPage Suivante" to close then run function Gui_Hunter(player)
+				make a gui slot 53 of player with arrow of protection 1 with no nbt named "&c&oMenu des &e&ométiers" to close then run player command "/metiers"
+			if {GUI.Hunter.%player%} is 2:
+				open virtual chest inventory named "&b&l&eMétier &7de &4&lChasseur" with size 3 to player
+				make a gui slot 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 and 26 of player with black stained glass pane named " "
+				make a gui slot 0 of player with skull of player named "&6&lStats &emétier &7de &4&lChasseur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Hunter.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Hunter.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Hunter.Level.%player%}^{@JOB.Difficulty})%" and " "
+				make a gui slot 10 of player with stray spawn egg named "&f&lVagabonds" with lore "&f&l-&9&l 25 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.stray.%player%}%"
+				make a gui slot 11 of player with evoker spawn egg named "&f&lÉvocateurs" with lore "&f&l-&9&l 25 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.evoker.%player%}%"
+				make a gui slot 12 of player with ghast spawn egg named "&f&lGhasts" with lore "&f&l-&9&l 25 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.ghast.%player%}%"
+				make a gui slot 13 of player with ravager spawn egg named "&f&lRavageurs" with lore "&f&l-&9&l 30 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.ravager.%player%}%"
+				make a gui slot 14 of player with elder Guardian spawn egg named "&f&lGrands gardiens" with lore "&f&l-&9&l 40 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.elder Guardian.%player%}%"
+				make a gui slot 15 of player with wither skeleton skull named "&f&lWithers" with lore "&f&l-&9&l 50 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.wither.%player%}%"
+				make a gui slot 16 of player with dragon head named "&f&lDragons de l'End" with lore "&f&l-&9&l 250 &2&opoints de &e&ométier" and "&f&l- &4Tués &7: &1%{CountKilled.dragon.%player%}%"
+				make a gui slot 22 of player with map of protection 1 with no nbt named "&3&oPage Précédente" to close then run function Gui_Hunter(player)
+				make a gui slot 26 of player with arrow of protection 1 with no nbt named "&c&oMenu des &e&ométiers" to close then run player command "/metiers"
+		
+		if arg-1 is "farmeur" or "farmer":
+			open virtual chest inventory named "&eMétier &7de &a&lFarmeur" with size 4 to player
+			make a gui slot 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34 and 35 of player with black stained glass pane named " "
+			make a gui slot 0 of player with skull of player named "&6&lStats &emétier &7de &a&lFarmeur" with lore " " and "&f&l- &7Niveau : &8%{JOB.Farmer.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Farmer.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Farmer.Level.%player%}^{@JOB.Difficulty})%" and " "
+			make a gui slot 10 of player with wheat named "&f&lBlés" with lore "&f&l-&9&l 5 &2&opoints de &e&ométiers" and "&f&l- &aCultivés &7: &1%{CountFarmed.wheat.%player%}%"
+			make a gui slot 11 of player with potato named "&f&lPatates" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.potato.%player%}%"
+			make a gui slot 12 of player with carrot named "&f&lCarottes" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.carrot.%player%}%"
+			make a gui slot 13 of player with beetroot named "&f&lBetteraves" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.beetroot.%player%}%"
+			make a gui slot 14 of player with mushroom named "&f&lChampignons" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &aCultivés &7: &1%{CountFarmed.mushroom.%player%}%"
+			make a gui slot 15 of player with melon named "&f&lPastèques" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &aCultivés &7: &1%{CountFarmed.melon.%player%}%"
+			make a gui slot 16 of player with pumpkin or carved pumpkin named "&f&lCitrouilles" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.pumpkin.%player%}%"
+			make a gui slot 19 of player with sugar cane named "&f&lCannes à sucre" with lore "&f&l-&9&l 10 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.sugar cane.%player%}%"
+			make a gui slot 20 of player with cactus named "&f&lCactus" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &aCultivés &7: &1%{CountFarmed.cactus.%player%}%"
+			make a gui slot 21 of player with Bamboo named "&f&lBambous" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &aCultivés &7: &1%{CountFarmed.Bamboo.%player%}%"
+			make a gui slot 22 of player with cocoa beans named "&f&lCacaos" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &aCultivés &7: &1%{CountFarmed.cocoa beans.%player%}%"
+			make a gui slot 23 of player with kelp named "&f&lAlgues" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.kelp.%player%}%"
+			make a gui slot 24 of player with nether wart named "&f&lVerrues du Nether" with lore "&f&l-&9&l 20 &2&opoints de &e&ométier" and "&f&l- &aCultivées &7: &1%{CountFarmed.nether wart.%player%}%"
+			make a gui slot 35 of player with arrow of protection 1 with no nbt named "&c&oMenu des &e&ométiers" to close then run player command "/metiers"
+		
+		if arg-1 is "bucheron" or "woodcutter":
+			open virtual chest inventory named "&eMétier &7de &9&lBûcheron" with size 3 to player
+			make a gui slot 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 and 26 of player with black stained glass pane named " "
+			make a gui slot 0 of player with skull of player named "&6&lStats &emétier &7de &9&lBûcheron" with lore " " and "&f&l- &7Niveau : &8%{JOB.Woodcutter.Level.%player%}%" and "&f&l- &7Points de &emétier&7 : &8%{JOB.Woodcutter.xp.%player%}%&f/&2%({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Woodcutter.Level.%player%}^{@JOB.Difficulty})%" and " "
+			make a gui slot 11 of player with leaves named "&f&lFeuilles" with lore "&f&l-&9&l 5 &2&opoints de &e&ométier" and "&f&l- &9Détruites &7: &1%{CountDestroyed.leaves.%player%}%"
+			make a gui slot 15 of player with log named "&f&lBûches" with lore "&f&l-&9&l 15 &2&opoints de &e&ométier" and "&f&l- &9Détruites &7: &1%{CountDestroyed.log.%player%}%"
+			make a gui slot 26 of player with arrow of protection 1 with no nbt named "&c&oMenu des &e&ométiers" to close then run player command "/metiers"
+
+every 15 seconds:
+	#!-  Hide all BossBars  -!#
+	hide bossbar "JOB.Miner.BossBar"
+	hide bossbar "JOB.Hunter.BossBar"
+	hide bossbar "JOB.Farmer.BossBar"
+	hide bossbar "JOB.Woodcutter.BossBar"
+
+#!-  BlockByPlayer  -!#
+on block place:
+	if player is not op:
+		add location of event-block to {BlockByPlayer::*}
+
+on block break:
+	if {BlockByPlayer::*} contains location of event-block:
+		remove location of event-block from {BlockByPlayer::*}
+		stop
+
+on grow of any tree:
+	wait 1 tick
+	remove event-location from {BlockByPlayer::*}
+
+On break:
+	#!-  Miner  -!#
+	if {BlockByPlayer::*} doesn't contain location of event-block:
+		if block is cobblestone:
+			add 1 to {JOB.Miner.xp.%player%}
+			add 1 to {CountMined.cobblestone.%player%}
+			if mod({CountMined.cobblestone.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Miner(player)
+		if block is stone:
+			add 1 to {JOB.Miner.xp.%player%}
+			add 1 to {CountMined.stone.%player%}
+			if mod({CountMined.stone.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Miner(player)
+		if block is netherrack:
+			add 1 to {JOB.Miner.xp.%player%}
+			add 1 to {CountMined.netherrack.%player%}
+			if mod({CountMined.netherrack.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Miner(player)
+		if block is end stone:
+			add 1 to {JOB.Miner.xp.%player%}
+			add 1 to {CountMined.end stone.%player%}
+			if mod({CountMined.end stone.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Miner(player)
+		if block is sandstone:
+			add 1 to {JOB.Miner.xp.%player%}
+			add 1 to {CountMined.sandstone.%player%}
+			if mod({CountMined.sandstone.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Miner(player)
+		if block is granite :
+			add 2 to {JOB.Miner.xp.%player%}
+			add 1 to {CountMined.granite.%player%}
+			if mod({CountMined.granite.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Miner(player)
+		if block is diorite :
+			add 2 to {JOB.Miner.xp.%player%}
+			add 1 to {CountMined.diorite.%player%}
+			if mod({CountMined.diorite.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Miner(player)
+		if block is andesite :
+			add 2 to {JOB.Miner.xp.%player%}
+			add 1 to {CountMined.andesite.%player%}
+			if mod({CountMined.andesite.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Miner(player)
+		if block is prismarine:
+			add 2 to {JOB.Miner.xp.%player%}
+			add 1 to {CountMined.prismarine.%player%}
+			if mod({CountMined.prismarine.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Miner(player)
+		if block is dark prismarine:
+			add 2 to {JOB.Miner.xp.%player%}
+			add 1 to {CountMined.dark prismarine.%player%}
+			if mod({CountMined.dark prismarine.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Miner(player)
+		if block is mossy cobblestone:
+			add 2 to {JOB.Miner.xp.%player%}
+			add 1 to {CountMined.mossy cobblestone.%player%}
+			if mod({CountMined.mossy cobblestone.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Miner(player)
+		if block is coal ore:
+			add 5 to {JOB.Miner.xp.%player%}
+			add 1 to {CountMined.coal ore.%player%}
+			if mod({CountMined.coal ore.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Miner(player)
+		if block is iron ore:
+			add 10 to {JOB.Miner.xp.%player%}
+			add 1 to {CountMined.iron ore.%player%}
+			if mod({CountMined.iron ore.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Miner(player)
+		if block is redstone ore:
+			add 15 to {JOB.Miner.xp.%player%}
+			add 1 to {CountMined.redstone ore.%player%}
+			if mod({CountMined.redstone.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Miner(player)
+		if block is obsidian:
+			add 15 to {JOB.Miner.xp.%player%}
+			add 1 to {CountMined.obsidian.%player%}
+			if mod({CountMined.obsidian.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Miner(player)
+		if block is gold ore:
+			add 20 to {JOB.Miner.xp.%player%}
+			add 1 to {CountMined.gold ore.%player%}
+			if mod({CountMined.gold ore.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Miner(player)
+		if block is lapis ore:
+			add 25 to {JOB.Miner.xp.%player%}
+			add 1 to {CountMined.lapis ore.%player%}
+			if mod({CountMined.lapis ore.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Miner(player)
+		if block is nether quartz ore:
+			add 25 to {JOB.Miner.xp.%player%}
+			add 1 to {CountMined.nether quartz ore.%player%}
+			if mod({CountMined.nether quartz ore.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Miner(player)
+		if block is diamond ore:
+			add 50 to {JOB.Miner.xp.%player%}
+			add 1 to {CountMined.diamond ore.%player%}
+			if mod({CountMined.diamond ore.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Miner(player)
+		if block is emerald ore:
+			add 100 to {JOB.Miner.xp.%player%}
+			add 1 to {CountMined.emerald ore.%player%}
+			if mod({CountMined.emerald ore.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Miner(player)
+
+	#!-  Farmer  -!#
+	if {BlockByPlayer::*} doesn't contain location of event-block:
+		if block is wheat :
+			add 5 to {JOB.Farmer.xp.%player%}
+			add 1 to {CountFarmed.wheat.%player%}
+			if mod({CountFarmed.wheat.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Farmer(player)
+		if block is potato plant :
+			add 5 to {JOB.Farmer.xp.%player%}
+			add 1 to {CountFarmed.potato.%player%}
+			if mod({CountFarmed.potato.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Farmer(player)
+		if block is carrot plant:
+			add 5 to {JOB.Farmer.xp.%player%}
+			add 1 to {CountFarmed.carrot.%player%}
+			if mod({CountFarmed.carrot.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Farmer(player)
+		if block is beet plant:
+			add 5 to {JOB.Farmer.xp.%player%}
+			add 1 to {CountFarmed.beetroot.%player%}
+			if mod({CountFarmed.beetroot.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Farmer(player)
+		if block is mushroom:
+			add 5 to {JOB.Farmer.xp.%player%}
+			add 1 to {CountFarmed.mushroom.%player%}
+			if mod({CountFarmed.mushroom.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Farmer(player)
+		if block is melon :
+			add 10 to {JOB.Farmer.xp.%player%}
+			add 1 to {CountFarmed.melon.%player%}
+			if mod({CountFarmed.melon.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Farmer(player)
+		if block is pumpkin or carved pumpkin:
+			add 10 to {JOB.Farmer.xp.%player%}
+			add 1 to {CountFarmed.pumpkin.%player%}
+			if mod({CountFarmed.pumpkin.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Farmer(player)
+		if block is sugar cane:
+			add 10 to {JOB.Farmer.xp.%player%}
+			add 1 to {CountFarmed.sugar cane.%player%}
+			if mod({CountFarmed.sugar cane.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Farmer(player)
+		if block is cactus:
+			add 15 to {JOB.Farmer.xp.%player%}
+			add 1 to {CountFarmed.cactus.%player%}
+			if mod({CountFarmed.cactus.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Farmer(player)
+		if block is bamboo:
+			add 15 to {JOB.Farmer.xp.%player%}
+			add 1 to {CountFarmed.Bamboo.%player%}
+			if mod({CountFarmed.Bamboo.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Farmer(player)
+		if block is cocoa plant:
+			add 15 to {JOB.Farmer.xp.%player%}
+			add 1 to {CountFarmed.cocoa beans.%player%}
+			if mod({CountFarmed.cocoa beans.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Farmer(player)
+		if block is kelp:
+			add 15 to {JOB.Farmer.xp.%player%}
+			add 1 to {CountFarmed.kelp.%player%}
+			if mod({CountFarmed.kelp.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Farmer(player)
+		if block is nether wart plant:
+			add 20 to {JOB.Farmer.xp.%player%}
+			add 1 to {CountFarmed.nether wart.%player%}
+			if mod({CountFarmed.nether wart.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Farmer(player)
+
+	#!-  Woodcutter  -!#
+	if {BlockByPlayer::*} doesn't contain location of event-block:
+		if block is any leaves:
+			add 5 to {JOB.Woodcutter.xp.%player%}
+			add 1 to {CountDestroyed.leaves.%player%}
+			if mod({CountDestroyed.leaves.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Woodcutter(player)
+		if block is any log:
+			add 15 to {JOB.Woodcutter.xp.%player%}
+			add 1 to {CountDestroyed.log.%player%}
+			if mod({CountDestroyed.log.%player%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to player's balance
+			Check_Woodcutter(player)
+
+on death:
+		#!-  Hunter  -!#
+	if attacker is a player:
+		if victim is a silverfish :
+			add 1 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.silverfish.%attacker%}
+			if mod({CountKilled.silverfish.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a endermite:
+			add 1 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.endermite.%attacker%}
+			if mod({CountKilled.endermite.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a bat:
+			add 1 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.bat.%attacker%}
+			if mod({CountKilled.bat.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a shulker:
+			add 1 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.shulker.%attacker%}
+			if mod({CountKilled.shulker.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a vex :
+			add 1 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.vex.%attacker%}
+			if mod({CountKilled.vex.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a zombie:
+			add 5 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.zombie.%attacker%}
+			if mod({CountKilled.zombie.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a zombie villager:
+			add 5 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.zombie villager.%attacker%}
+			if mod({CountKilled.zombie villager.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a Spider :
+			add 5 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.Spider.%attacker%}
+			if mod({CountKilled.Spider.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a Cave Spider:
+			add 5 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.Cave Spider.%attacker%}
+			if mod({CountKilled.Cave Spider.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is slimes:
+			add 5 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.slime.%attacker%}
+			if mod({CountKilled.slime.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a Mooshroom:
+			add 5 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.Mooshroom.%attacker%}
+			if mod({CountKilled.Mooshroom.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a polar bear:
+			add 5 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.polar bear.%attacker%}
+			if mod({CountKilled.polar bear.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a skeleton:
+			add 10 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.skeleton.%attacker%}
+			if mod({CountKilled.skeleton.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a phantom:
+			add 10 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.phantom.%attacker%}
+			if mod({CountKilled.phantom.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a guardian:
+			add 10 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.guardian.%attacker%}
+			if mod({CountKilled.guardian.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a creeper:
+			add 15 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.creeper.%attacker%}
+			if mod({CountKilled.creeper.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a Enderman:
+			add 15 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.Enderman.%attacker%}
+			if mod({CountKilled.Enderman.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a Zombie Pigman:
+			add 15 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.Zombie Pigman.%attacker%}
+			if mod({CountKilled.Zombie Pigman.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a husk:
+			add 15 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.husk.%attacker%}
+			if mod({CountKilled.husk.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a drowned:
+			add 15 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.drowned.%attacker%}
+			if mod({CountKilled.drowned.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a witch:
+			add 20 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.witch.%attacker%}
+			if mod({CountKilled.witch.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a Pillager:
+			add 20 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.Pillager.%attacker%}
+			if mod({CountKilled.Pillager.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a vindicator:
+			add 20 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.vindicator.%attacker%}
+			if mod({CountKilled.vindicator.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a blaze:
+			add 20 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.blaze.%attacker%}
+			if mod({CountKilled.blaze.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a magma cube:
+			add 20 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.magma cube.%attacker%}
+			if mod({CountKilled.magma cube.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a wither skeleton:
+			add 20 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.wither skeleton.%attacker%}
+			if mod({CountKilled.wither skeleton.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a stray:
+			add 25 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.stray.%attacker%}
+			if mod({CountKilled.stray.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a evoker:
+			add 25 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.evoker.%attacker%}
+			if mod({CountKilled.evoker.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a ghast:
+			add 25 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.ghast.%attacker%}
+			if mod({CountKilled.ghast.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a ravager:
+			add 30 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.ravager.%attacker%}
+			if mod({CountKilled.ravager.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a elder Guardian:
+			add 40 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.elder Guardian.%attacker%}
+			if mod({CountKilled.elder Guardian.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a wither:
+			add 50 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.wither.%attacker%}
+			if mod({CountKilled.wither.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+		if victim is a ender dragon:
+			add 250 to {JOB.Hunter.xp.%attacker%}
+			add 1 to {CountKilled.dragon.%attacker%}
+			if mod({CountKilled.dragon.%attacker%} , {@JOB.Count.Needed}) is equal to 0:
+				add {@JOB.Reward} to attacker's balance
+			Check_Hunter(attacker)
+
+on left click with nether star:
+	if player is sneaking:
+		if player is op:
+			Reset_Player(player)
+			send "&4&lTous vos métiers ont été réinitialiser" to player
+
+function Check_Miner(p:player):
+	set {JOB.Check.Miner} to ({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Miner.Level.%{_p}%}^{@JOB.Difficulty})
+	if {JOB.Miner.xp.%{_p}%} is greater than {JOB.Check.Miner}-1:
+		remove {JOB.Check.Miner} from {JOB.Miner.xp.%{_p}%}
+		add 1 to {JOB.Miner.Level.%{_p}%}
+		add ({JOB.Miner.Level.%{_p}%} * 1000) to {_p}'s balance
+		send "&2&lBien joué &3&l%{_p}% %nl%&2&lTu es passé niveau &9&l%{JOB.Miner.Level.%{_p}%}% &2&ldans le &e&lmétier &2&lde &f&lMineur" to {_p}
+	create bossbar titled "&f&lNiveau %{JOB.Miner.Level.%{_p}%}% dans le métier de Mineur" and id "JOB.Miner.BossBar" for {_p} with progress ({JOB.Miner.xp.%{_p}%}/{JOB.Check.Miner}*100) with colors white
+	stop
+
+function Check_Hunter(p:player):
+	set {JOB.Check.Hunter} to ({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Hunter.Level.%{_p}%}^{@JOB.Difficulty})
+	if {JOB.Hunter.xp.%{_p}%} is greater than {JOB.Check.Hunter}-1:
+		remove {JOB.Check.Hunter} from {JOB.Hunter.xp.%{_p}%}
+		add 1 to {JOB.Hunter.Level.%{_p}%}
+		add ({JOB.Hunter.Level.%{_p}%} * 1000) to {_p}'s balance
+		send "&2&lBien joué &3&l%{_p}% %nl%&2&lTu es passé niveau &9&l%{JOB.Hunter.Level.%{_p}%}% &2&ldans le &e&lmétier &2&lde &4&lChasseur" to {_p}
+	create bossbar titled "&f&lNiveau %{JOB.Hunter.Level.%{_p}%}% dans le métier de Chasseur" and id "JOB.Hunter.BossBar" for {_p} with progress ({JOB.Hunter.xp.%{_p}%}/{JOB.Check.Hunter}*100) with colors red
+	stop
+
+function Check_Farmer(p:player):
+	set {JOB.Check.Farmer} to ({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Farmer.Level.%{_p}%}^{@JOB.Difficulty})
+	if {JOB.Farmer.xp.%{_p}%} is greater than {JOB.Check.Farmer}-1:
+		remove {JOB.Check.Farmer} from {JOB.Farmer.xp.%{_p}%}
+		add 1 to {JOB.Farmer.Level.%{_p}%}
+		add ({JOB.Farmer.Level.%{_p}%} * 1000) to {_p}'s balance
+		send "&2&lBien joué &3&l%{_p}% %nl%&2&lTu es passé niveau &9&l%{JOB.Farmer.Level.%{_p}%}% &2&ldans le &e&lmétier &2&lde &a&lFarmeur" to {_p}
+	create bossbar titled "&f&lNiveau %{JOB.Farmer.Level.%{_p}%}% dans le métier de Fermier" and id "JOB.Farmer.BossBar" for {_p} with progress ({JOB.Farmer.xp.%{_p}%}/{JOB.Check.Farmer}*100) with colors green
+	stop
+
+function Check_Woodcutter(p:player):
+	set {JOB.Check.Woodcutter} to ({@JOB.Start-xp}+{@JOB.Start-xp}*{JOB.Woodcutter.Level.%{_p}%}^{@JOB.Difficulty})
+	if {JOB.Woodcutter.xp.%{_p}%} is greater than {JOB.Check.Woodcutter}-1:
+		remove {JOB.Check.Woodcutter} from {JOB.Woodcutter.xp.%{_p}%}
+		add 1 to {JOB.Woodcutter.Level.%{_p}%}
+		add ({JOB.Woodcutter.Level.%{_p}%} * 1000) to {_p}'s balance
+		send "&2&lBien joué &3&l%{_p}% %nl%&2&lTu es passé niveau &9&l%{JOB.Woodcutter.Level.%{_p}%}% &2&ldans le &e&lmétier &2&lde &f&l-&9&lBûcheron" to {_p}
+	create bossbar titled "&f&lNiveau %{JOB.Woodcutter.Level.%{_p}%}% dans le métier de bûcheron" and id "JOB.Woodcutter.BossBar" for {_p} with progress ({JOB.Woodcutter.xp.%{_p}%}/{JOB.Check.Woodcutter}*100) with colors blue
+	stop
+
+function Gui_Hunter(p: player):
+	if {GUI.Hunter.%{_p	}%} is 1:
+		set {GUI.Hunter.%{_p}%} to 2
+	else:
+		set {GUI.Hunter.%{_p}%} to 1
+	make {_p} execute "metiers chasseur"
+
+function Reset_Player(p: player):
+	set {JOB.Miner.xp.%{_p}%} to 0
+	set {JOB.Hunter.xp.%{_p}%} to 0
+	set {JOB.Farmer.xp.%{_p}%} to 0
+	set {JOB.Woodcutter.xp.%{_p}%} to 0
+	set {JOB.Miner.Level.%{_p}%} to 0
+	set {JOB.Hunter.Level.%{_p}%} to 0
+	set {JOB.Farmer.Level.%{_p}%} to 0
+	set {JOB.Woodcutter.Level.%{_p}%} to 0
+
+	#!-		Miner			-!#
+	set {CountMined.cobblestone.%{_p}%} to 0
+	set {CountMined.stone.%{_p}%} to 0
+	set {CountMined.netherrack.%{_p}%} to 0
+	set {CountMined.end stone.%{_p}%} to 0
+	set {CountMined.sandstone.%{_p}%} to 0
+	set {CountMined.granite.%{_p}%} to 0
+	set {CountMined.diorite.%{_p}%} to 0
+	set {CountMined.andesite.%{_p}%} to 0
+	set {CountMined.prismarine.%{_p}%} to 0
+	set {CountMined.dark prismarine.%{_p}%} to 0
+	set {CountMined.mossy cobblestone.%{_p}%} to 0
+	set {CountMined.coal ore.%{_p}%} to 0
+	set {CountMined.iron ore.%{_p}%} to 0
+	set {CountMined.redstone ore.%{_p}%} to 0
+	set {CountMined.obsidian.%{_p}%} to 0
+	set {CountMined.gold ore.%{_p}%} to 0
+	set {CountMined.lapis ore.%{_p}%} to 0
+	set {CountMined.nether quartz ore.%{_p}%} to 0
+	set {CountMined.diamond ore.%{_p}%} to 0
+	set {CountMined.emerald ore.%{_p}%} to 0
+	
+	#!-		Farmer			-!#
+	set {CountFarmed.wheat.%{_p}%} to 0
+	set {CountFarmed.potato.%{_p}%} to 0
+	set {CountFarmed.carrot.%{_p}%} to 0
+	set {CountFarmed.beetroot.%{_p}%} to 0
+	set {CountFarmed.mushroom.%{_p}%} to 0
+	set {CountFarmed.melon.%{_p}%} to 0
+	set {CountFarmed.pumpkin.%{_p}%} to 0
+	set {CountFarmed.sugar cane.%{_p}%} to 0
+	set {CountFarmed.cactus.%{_p}%} to 0
+	set {CountFarmed.Bamboo.%{_p}%} to 0
+	set {CountFarmed.cocoa beans.%{_p}%} to 0
+	set {CountFarmed.kelp.%{_p}%} to 0
+	set {CountFarmed.nether wart.%{_p}%} to 0
+
+	#!-		Woodcutter		-!#
+	set {CountDestroyed.leaves.%{_p}%} to 0
+	set {CountDestroyed.log.%{_p}%} to 0
+
+	#!-		Hunter			-!#
+	set {CountKilled.silverfish.%{_p}%} to 0
+	set {CountKilled.endermite.%{_p}%} to 0
+	set {CountKilled.bat.%{_p}%} to 0
+	set {CountKilled.shulker.%{_p}%} to 0
+	set {CountKilled.vex.%{_p}%} to 0
+	set {CountKilled.zombie.%{_p}%} to 0
+	set {CountKilled.zombie villager.%{_p}%} to 0
+	set {CountKilled.Spider.%{_p}%} to 0
+	set {CountKilled.Cave Spider.%{_p}%} to 0
+	set {CountKilled.slime.%{_p}%} to 0
+	set {CountKilled.Mooshroom.%{_p}%} to 0
+	set {CountKilled.polar bear.%{_p}%} to 0
+	set {CountKilled.skeleton.%{_p}%} to 0
+	set {CountKilled.phantom.%{_p}%} to 0
+	set {CountKilled.guardian.%{_p}%} to 0
+	set {CountKilled.creeper.%{_p}%} to 0
+	set {CountKilled.Enderman.%{_p}%} to 0
+	set {CountKilled.Zombie Pigman.%{_p}%} to 0
+	set {CountKilled.husk.%{_p}%} to 0
+	set {CountKilled.drowned.%{_p}%} to 0
+	set {CountKilled.witch.%{_p}%} to 0
+	set {CountKilled.Pillager.%{_p}%} to 0
+	set {CountKilled.vindicator.%{_p}%} to 0
+	set {CountKilled.blaze.%{_p}%} to 0
+	set {CountKilled.magma cube.%{_p}%} to 0
+	set {CountKilled.wither skeleton.%{_p}%} to 0
+	set {CountKilled.stray.%{_p}%} to 0
+	set {CountKilled.evoker.%{_p}%} to 0
+	set {CountKilled.ghast.%{_p}%} to 0
+	set {CountKilled.ravager.%{_p}%} to 0
+	set {CountKilled.elder Guardian.%{_p}%} to 0
+	set {CountKilled.wither.%{_p}%} to 0
+	set {CountKilled.dragon.%{_p}%} to 0
